@@ -22,7 +22,7 @@ class ViewController: UIViewController {
         let addAlert = UIAlertController(title: "todo list", message: "추가할 내용을 입력하세요", preferredStyle: .alert)
         addAlert.addTextField()
         let cancelAction = UIAlertAction(title: "취소", style: .default)
-        let addAction = UIAlertAction(title: "네", style: .default, handler: {ACTION in
+        let okAction = UIAlertAction(title: "네", style: .default, handler: {ACTION in
             guard let item = addAlert.textFields![0].text else {return}
             let insertModel = InsertModel()
             let result = insertModel.insertDB(item: item)
@@ -39,9 +39,10 @@ class ViewController: UIViewController {
                 resultAlert.addAction(resultAction)
                 self.present(resultAlert,animated: true)
             }
-            
-            
         })
+        addAlert.addAction(cancelAction)
+        addAlert.addAction(okAction)
+        self.present(addAlert,animated: true)
     }
     @IBAction func btnSearch(_ sender: UIButton) {
     }
