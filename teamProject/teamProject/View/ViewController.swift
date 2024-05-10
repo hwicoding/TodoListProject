@@ -86,6 +86,11 @@ extension ViewController: UITableViewDelegate{
         // #warning Incomplete implementation, return the number of rows
         return todoList.count
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            // 선택된 행에 대한 동작을 여기에 추가합니다.
+            print("You selected row \(indexPath.row)")
+        }
 }
 
 extension ViewController: UITableViewDataSource{
@@ -105,7 +110,8 @@ extension ViewController: UITableViewDataSource{
         return cell
     }
 }
-    
+
+
     
 
     /*
