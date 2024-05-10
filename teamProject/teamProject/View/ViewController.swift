@@ -19,6 +19,29 @@ class ViewController: UIViewController {
     }
     
     @IBAction func btnInsert(_ sender: UIBarButtonItem) {
+        let addAlert = UIAlertController(title: "todo list", message: "추가할 내용을 입력하세요", preferredStyle: .alert)
+        addAlert.addTextField()
+        let cancelAction = UIAlertAction(title: "취소", style: .default)
+        let addAction = UIAlertAction(title: "네", style: .default, handler: {ACTION in
+            guard let item = addAlert.textFields![0].text else {return}
+            let insertModel = InsertModel()
+            let result = insertModel.insertDB(item: item)
+            
+            if result{
+                let resultAlert = UIAlertController(title: "완료", message: "리스트가 추가되었습니다.", preferredStyle: .alert)
+                let resultAction = UIAlertAction(title: "OK", style: .default)
+                
+                resultAlert.addAction(resultAction)
+                self.present(resultAlert,animated: true)
+            }else{
+                let resultAlert = UIAlertController(title: "실패", message: "에러가 발생하였습니다.", preferredStyle: .alert)
+                let resultAction = UIAlertAction(title: "OK", style: .default)
+                resultAlert.addAction(resultAction)
+                self.present(resultAlert,animated: true)
+            }
+            
+            
+        })
     }
     @IBAction func btnSearch(_ sender: UIButton) {
     }
