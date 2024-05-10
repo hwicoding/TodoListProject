@@ -16,7 +16,20 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        tableView.delegate = self
+        tableView.dataSource = self
+        readValues()
     }
+    
+    func readValues(){
+        let queryModel = QueryModel() // 생성자를 불러왔기 떄문에 StudentsDB init까지는 실행함.
+        todoList.removeAll() // 초기화
+        queryModel.delegate = self
+        queryModel.queryDB()
+        tableView.reloadData()
+    }
+    
+    
     
     @IBAction func btnInsert(_ sender: UIBarButtonItem) {
         let addAlert = UIAlertController(title: "todo list", message: "추가할 내용을 입력하세요", preferredStyle: .alert)
@@ -33,6 +46,9 @@ class ViewController: UIViewController {
                 
                 resultAlert.addAction(resultAction)
                 self.present(resultAlert,animated: true)
+                
+                self.tableView.reloadData()
+                
             }else{
                 let resultAlert = UIAlertController(title: "실패", message: "에러가 발생하였습니다.", preferredStyle: .alert)
                 let resultAction = UIAlertAction(title: "OK", style: .default)
@@ -49,6 +65,16 @@ class ViewController: UIViewController {
     
 }
 
+extension ViewController: QueryModelProtocol{
+    func itemDownloaded(items: [TodoListModel]) {
+        todoList = items
+        tableView.reloadData()
+    }
+    
+    
+}
+
+
 extension ViewController: UITableViewDelegate{
     // Section 갯수 보통은 1
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -60,10 +86,12 @@ extension ViewController: UITableViewDelegate{
         // #warning Incomplete implementation, return the number of rows
         return todoList.count
     }
-    
+}
+
+extension ViewController: UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath)
-
+        
         // Configure the cell...
         // 콘텐츠 구성
         var content = cell.defaultContentConfiguration()
@@ -73,10 +101,11 @@ extension ViewController: UITableViewDelegate{
         content.image = UIImage(systemName: "square.and.arrow.up.circle.fill")
         // 셀 콘텐츠 구성
         cell.contentConfiguration = content
-    
-
+        
         return cell
     }
+}
+    
     
 
     /*
@@ -166,7 +195,7 @@ extension ViewController: UITableViewDelegate{
     }
     */
     
-}
+
 
 
 

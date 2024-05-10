@@ -29,7 +29,7 @@ class QueryModel {
   // Select
   func queryDB() {
     var stmt: OpaquePointer?
-    let queryString = "SELECT * FROM todolist orderby status"
+    let queryString = "SELECT * FROM todolist order by status"
     
     if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK {
         let errorMessage = String(cString: sqlite3_errmsg(db)!)
@@ -42,7 +42,7 @@ class QueryModel {
         let status = Int(sqlite3_column_int(stmt, 2))
         
         todoLists.append(TodoListModel(id: id, item: item, status: status))
-        
+        print("------------------------------------- append")
     }
     delegate.itemDownloaded(items: todoLists)
   }
