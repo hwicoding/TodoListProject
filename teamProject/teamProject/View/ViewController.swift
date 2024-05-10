@@ -47,7 +47,7 @@ class ViewController: UIViewController {
                 resultAlert.addAction(resultAction)
                 self.present(resultAlert,animated: true)
                 
-                self.tableView.reloadData()
+                self.readValues()
                 
             }else{
                 let resultAlert = UIAlertController(title: "실패", message: "에러가 발생하였습니다.", preferredStyle: .alert)
