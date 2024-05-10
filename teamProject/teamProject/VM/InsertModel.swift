@@ -25,22 +25,21 @@ class InsertModel{
             let errorMessage = String(cString: sqlite3_errmsg(db)!)
             print("error creating table : \(errorMessage)")
         }
+    }
+    func insertDB(item: String) -> Bool {
+        var stmt: OpaquePointer?
         
-        func insertDB(item: String, status: Int) -> Bool {
-            var stmt: OpaquePointer?
-            
-            let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
-            let queryString = "INSERT INTO todolist (item,status) VALUES (?,0)"
-            
-            sqlite3_prepare(db, queryString, -1, &stmt, nil)
-            
-            sqlite3_bind_text(stmt, 1, item, -1, SQLITE_TRANSIENT)
-            
-            if sqlite3_step(stmt) == SQLITE_DONE {
-                return true
-            }
-            
-            return false
+        let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
+        let queryString = "INSERT INTO todolist (item,status) VALUES (?,0)"
+        
+        sqlite3_prepare(db, queryString, -1, &stmt, nil)
+        
+        sqlite3_bind_text(stmt, 1, item, -1, SQLITE_TRANSIENT)
+        
+        if sqlite3_step(stmt) == SQLITE_DONE {
+            return true
         }
+        
+        return false
     }
 }
