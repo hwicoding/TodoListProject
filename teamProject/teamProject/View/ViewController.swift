@@ -190,65 +190,50 @@ extension ViewController: UITableViewDataSource{
         
         return cell
     }
+    
+    //Table 셀 삭제
+    //Override to support editing the table view.
+   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+       if editingStyle == .delete {
+           // Delete the row from the data source
+           
+           let deleteModel = DeleteModel()
+           let id = todoList[indexPath.row].id
+           
+           // 입력을 안하면 ""로 대치
+           let result = deleteModel.deleteDB(id: Int32(id))
+           todoList.remove(at: indexPath.row)
+           
+           // Alert
+           if result{
+               let resultAlert = UIAlertController(title: "결과", message: "삭제 되었습니다.", preferredStyle: .alert)
+               let okAction = UIAlertAction(title: "OK", style: .default)
+               
+               resultAlert.addAction(okAction)
+               self.present(resultAlert, animated: true)
+               
+           } else{
+               let resultAlert = UIAlertController(title: "에러", message: "수정 시 문제가 발생 되었습니다.", preferredStyle: .alert)
+               let okAction = UIAlertAction(title: "OK", style: .default)
+               
+               resultAlert.addAction(okAction)
+               present(resultAlert, animated: true)
+               
+           }
+           
+           tableView.deleteRows(at: [indexPath], with: .fade)
+       } else if editingStyle == .insert {
+           // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+       }
+   }
+   
+    //삭제 한국어 변환
+   func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+       return "삭제"
+   }
 }
 
-
-    
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    // Table 셀 삭제
-    // Override to support editing the table view.
-//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-//        if editingStyle == .delete {
-//            // Delete the row from the data source
-//            
-//            let todoListDB = TodoListDB()
-//            
-//            let id = Int32(todoList[indexPath.row].id)
-//            
-//            // 입력을 안하면 ""로 대치
-//            let result = todoListDB.deleteDB(id: id)
-//            todoList.remove(at: indexPath.row)
-//            
-//            // Alert
-//            if result{
-//                let resultAlert = UIAlertController(title: "결과", message: "삭제 되었습니다.", preferredStyle: .alert)
-//                let okAction = UIAlertAction(title: "네, 알겠습니다.", style: .default, handler: {ACTION in
-//                    self.navigationController?.popViewController(animated: true)
-//                })
-//                
-//                resultAlert.addAction(okAction)
-//                present(resultAlert, animated: true)
-//                
-//            } else{
-//                let resultAlert = UIAlertController(title: "에러", message: "수정 시 문제가 발생 되었습니다.", preferredStyle: .alert)
-//                let okAction = UIAlertAction(title: "네, 알겠습니다.", style: .default, handler: {ACTION in
-//                    self.navigationController?.popViewController(animated: true)
-//                })
-//                
-//                resultAlert.addAction(okAction)
-//                present(resultAlert, animated: true)
-//                
-//            }
-//            
-//            
-//            tableView.deleteRows(at: [indexPath], with: .fade)
-//        } else if editingStyle == .insert {
-//            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-//        }
-//    }
-    
-    // 삭제 한국어 변환
-//    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
-//        return "삭제"
-//    }
+     
     
 
     // 목록 순서 바꾸기

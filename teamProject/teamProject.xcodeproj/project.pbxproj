@@ -17,6 +17,7 @@
 		9330305E2BEE029E0052B17C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9330305D2BEE029E0052B17C /* Assets.xcassets */; };
 		933030612BEE029E0052B17C /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 933030602BEE029E0052B17C /* Base */; };
 		9330306C2BEE0CF90052B17C /* InsertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9330306B2BEE0CF90052B17C /* InsertModel.swift */; };
+		9330306E2BEF1FB20052B17C /* DeleteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9330306D2BEF1FB20052B17C /* DeleteModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		933030602BEE029E0052B17C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		933030622BEE029E0052B17C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9330306B2BEE0CF90052B17C /* InsertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsertModel.swift; sourceTree = "<group>"; };
+		9330306D2BEF1FB20052B17C /* DeleteModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 				2B8585DC2BEE0A55006D3267 /* QueryModel.swift */,
 				9330306B2BEE0CF90052B17C /* InsertModel.swift */,
 				2B8585E02BEE11D3006D3267 /* QueryUpdate.swift */,
+				9330306D2BEF1FB20052B17C /* DeleteModel.swift */,
 			);
 			path = VM;
 			sourceTree = "<group>";
@@ -174,6 +177,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9330306E2BEF1FB20052B17C /* DeleteModel.swift in Sources */,
 				2B8585E12BEE11D3006D3267 /* QueryUpdate.swift in Sources */,
 				2B8585DD2BEE0A55006D3267 /* QueryModel.swift in Sources */,
 				933030592BEE029C0052B17C /* ViewController.swift in Sources */,
