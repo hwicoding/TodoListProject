@@ -19,6 +19,22 @@ class ViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         readValues()
+        
+        
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+        tableView.addGestureRecognizer(longPressGesture)
+    }
+    
+    @objc func handleLongPress(sender: UILongPressGestureRecognizer) {
+        if sender.state == .began {
+            // 롱 프레스가 시작될 때의 작업을 수행합니다.
+            
+            // 터치된 포인트에서 테이블 뷰 셀의 인덱스 판별
+            let touchPoint = sender.location(in: tableView)
+            if let indexPath = tableView.indexPathForRow(at: touchPoint) {
+                updateStatusAlert(selectRow: indexPath.row)
+            }
+        }
     }
     
     func readValues(){
@@ -63,6 +79,72 @@ class ViewController: UIViewController {
     @IBAction func btnSearch(_ sender: UIButton) {
     }
     
+    func updateAlert(selectRow: Int) {
+        // 이 func는 SingleTap Alert.
+        // 셀을 눌렀을 때, updateAlert 실행하여 Alert를 보여줌.
+        // indexPath.row를 통해 누른 cell의 정보를 알고있다.
+        
+        let alertController = UIAlertController(title: "TodoList", message: "수정 할 내용을 입력하세요!", preferredStyle: .alert)
+        alertController.addTextField { alert in
+            alert.placeholder = "텍스트 입력"
+            alert.text = self.todoList[selectRow].item
+        }
+        alertController.addAction(UIAlertAction(title: "취소", style: .default))
+        alertController.addAction(UIAlertAction(title: "확인", style: .default, handler: { ACTION in
+            let updateQuery = QueryUpdate()
+            
+            guard let item =  alertController.textFields?.first?.text else {return}
+            
+            let response: Bool = updateQuery.updateItem(item: item, status: Int32(self.todoList[selectRow].status), id: Int32(self.todoList[selectRow].id))
+            
+            if response {
+                let resultAlert = UIAlertController(title: "결과", message: "수정이 완료되었습니다.", preferredStyle: .alert)
+                resultAlert.addAction(UIAlertAction(title: "확인", style: .default))
+                self.present(resultAlert, animated: true)
+                self.readValues()
+            }
+            else {
+                let resultAlert = UIAlertController(title: "결과", message: "에러가 발생하였습니다.", preferredStyle: .alert)
+                resultAlert.addAction(UIAlertAction(title: "확인", style: .default, handler: { ACTION in
+                }))
+                self.present(resultAlert, animated: true)
+            }
+            
+        }))
+        
+        present(alertController, animated: true)
+    }
+    
+    func updateStatusAlert(selectRow: Int) {
+        let alertController = UIAlertController(title: "TodoList", message: "해당 항목을 작업완료로 설정하시겠습니까?", preferredStyle: .alert)
+        
+        alertController.addAction(UIAlertAction(title: "취소", style: .default))
+        alertController.addAction(UIAlertAction(title: "미완료", style: .default, handler: { ACTION in
+            let update = QueryUpdate()
+            if update.updateStatus(status: 0, id: Int32(self.todoList[selectRow].id)) {
+                let confirmAlert = UIAlertController(title: "결과", message: "미완료로 변경되었습니다.", preferredStyle: .alert)
+                confirmAlert.addAction(UIAlertAction(title: "확인", style: .default, handler: { ACTION in
+                    self.readValues()
+                }))
+                
+                self.present(confirmAlert, animated: true)
+            }
+        }))
+        alertController.addAction(UIAlertAction(title: "완료", style: .default, handler: { ACTION in
+            let update = QueryUpdate()
+            if update.updateStatus(status: 1, id: Int32(self.todoList[selectRow].id)) {
+                let confirmAlert = UIAlertController(title: "결과", message: "완료로 변경되었습니다.", preferredStyle: .alert)
+                confirmAlert.addAction(UIAlertAction(title: "확인", style: .default, handler: { ACTION in
+                    self.readValues()
+                }))
+                
+                self.present(confirmAlert, animated: true)
+            }
+        }))
+        
+        present(alertController, animated: true)
+    }
+    
 }
 
 extension ViewController: QueryModelProtocol{
@@ -88,9 +170,8 @@ extension ViewController: UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            // 선택된 행에 대한 동작을 여기에 추가합니다.
-            print("You selected row \(indexPath.row)")
-        }
+        self.updateAlert(selectRow: indexPath.row)
+    }
 }
 
 extension ViewController: UITableViewDataSource{
