@@ -185,8 +185,15 @@ extension ViewController: UITableViewDataSource{
         content.text = todoList[indexPath.row].item
         // 셀 이미지 설정
         content.image = UIImage(systemName: "square.and.arrow.up.circle.fill")
+        
+        if todoList[indexPath.row].status == 1 {
+            cell.isUserInteractionEnabled = false
+            cell.textLabel?.textColor = UIColor.gray // 선택적으로 비활성화된 셀의 텍스트 색상을 변경할 수 있습니다.
+        } 
         // 셀 콘텐츠 구성
         cell.contentConfiguration = content
+        
+
         
         return cell
     }
